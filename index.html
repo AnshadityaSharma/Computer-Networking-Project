@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam SMS Predictor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body {
+    /* background-image: url('campus-banner.jpg');  */
+    background-image: url('https://chennai.vit.ac.in/wp-content/uploads/2020/03/campus-banner.jpg'); 
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center; 
+    height: 100vh; 
+    margin: 0;
+}
+        .container {
+            max-width: 80vh;
+            max-height: 20vh;
+        }
+        textarea {
+            resize: none;
+            height: 5vh;
+        }
+        #result {
+            font-weight: bold;
+        }
+        label {
+            background-color: rgba(80, 199, 232, 0.623);
+            text-shadow: 2px;
+            border-radius: 15px;
+            margin: 8px;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Spam Detector</h1>
+        <form id="sms-form">
+            <div class="form-group">
+                <label for="sms-text">Enter SMS Text:</label>
+                <textarea class="form-control" id="sms-text" rows="2" required ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" >Submit</button>
+        </form>
+        <form id="email-form">
+            <div class="form-group">
+                <label for="email-text">Enter Email id:</label>
+                <textarea class="form-control" id="email-text" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+        <form id="phone-form">
+            <div class="form-group">
+                <label for="phone-text">Enter Phone Number:</label>
+                <textarea class="form-control" id="phone-text" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+        <div id="result" class="mt-4 text-center"></div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function handleFormSubmission(formId, textAreaId) {
+                $(formId).submit(function(event) {
+                    event.preventDefault();
+                    var inputText = $(textAreaId).val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/predict',
+                        data: JSON.stringify({ input: inputText }),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function(data) {
+                            var prediction = data.prediction;
+                            $('#result').html('<strong>Prediction:</strong> ' + prediction);
+                        },
+                        error: function() {
+                            $('#result').html('<div class="alert alert-danger">Error making prediction.</div>');
+                        }
+                    });
+                });
+
+                $(textAreaId).keypress(function(event) {
+                    if (event.which === 13) {
+                        event.preventDefault();
+                        $(formId).submit();
+                    }
+                });
+            }
+
+            handleFormSubmission('#sms-form', '#sms-text');
+            handleFormSubmission('#email-form', '#email-text');
+            handleFormSubmission('#phone-form', '#phone-text');
+        });
+    </script>
+</body>
+</html>
