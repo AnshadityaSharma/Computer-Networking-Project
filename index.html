@@ -6,15 +6,15 @@
     <title>Spam SMS Predictor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-      body {
-    /* background-image: url('campus-banner.jpg');  */
-    background-image: url('https://chennai.vit.ac.in/wp-content/uploads/2020/03/campus-banner.jpg'); 
-    background-repeat: no-repeat; 
-    background-size: cover;
-    background-position: center; 
-    height: 100vh; 
-    margin: 0;
-}
+        body {
+            /* background-image: url('campus-banner.jpg');  */
+            background-image: url('https://chennai.vit.ac.in/wp-content/uploads/2020/03/campus-banner.jpg'); 
+            background-repeat: no-repeat; 
+            background-size: cover;
+            background-position: center; 
+            height: 100vh; 
+            margin: 0;
+        }
         .container {
             max-width: 80vh;
             max-height: 20vh;
@@ -27,17 +27,33 @@
             font-weight: bold;
         }
         label {
-            background-color: rgba(80, 199, 232, 0.623);
+            background-color: rgb(226, 230, 231);
             text-shadow: 2px;
             border-radius: 15px;
             margin: 8px;
             font-weight: bold;
+            padding: 4px;
         }
-        
+        .text-center{
+            background-color: rgb(123, 204, 239);
+            border-radius: 17px;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+        }
+        /* Frosted Glass Effect */
+        .frosted-glass {
+            backdrop-filter: blur(10px) brightness(1.1);
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <div class="container my-5">
+    <div class="  frosted-glass" >
         <h1 class="text-center mb-4">Spam Detector</h1>
         <form id="sms-form">
             <div class="form-group">
@@ -59,8 +75,8 @@
                 <textarea class="form-control" id="phone-text" rows="2" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-        <div id="result" class="mt-4 text-center"></div>
+        </form></div>
+        <div id="result" class="mt-4 "></div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
