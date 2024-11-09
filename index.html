@@ -6,116 +6,171 @@
     <title>Spam SMS Predictor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            /* background-image: url('campus-banner.jpg');  */
-            background-image: url('https://chennai.vit.ac.in/wp-content/uploads/2020/03/campus-banner.jpg'); 
-            background-repeat: no-repeat; 
-            background-size: cover;
-            background-position: center; 
-            height: 100vh; 
-            margin: 0;
-        }
-        .container {
-            max-width: 80vh;
-            max-height: 20vh;
-        }
-        textarea {
-            resize: none;
-            height: 5vh;
-        }
-        #result {
-            font-weight: bold;
-        }
-        label {
-            background-color: rgb(226, 230, 231);
-            text-shadow: 2px;
-            border-radius: 15px;
-            margin: 8px;
-            font-weight: bold;
-            padding: 4px;
-        }
-        .text-center{
-            background-color: rgb(123, 204, 239);
-            border-radius: 17px;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-        }
-        /* Frosted Glass Effect */
-        .frosted-glass {
+body {
+    background-color: black;
+    color: white;
+    overflow: hidden;
+}
+
+.spam-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.spam-text, .detection-text {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0.15;
+    animation: colorChange 2s infinite;
+}
+
+/* Spam moves diagonally within a confined area */
+.spam-text {
+    animation: moveSpam 8s infinite alternate ease-in-out, colorChange 2s infinite;
+}
+
+/* Detection moves in the opposite diagonal within a confined area */
+.detection-text {
+    animation: moveDetection 8s infinite alternate ease-in-out, colorChange 2s infinite;
+}
+
+/* Define confined movement animations */
+@keyframes moveSpam {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30vw, 30vh); } /* Moves within a 30% viewport range */
+}
+
+@keyframes moveDetection {
+    0% { transform: translate(30vw, 30vh); }
+    100% { transform: translate(0, 0); } /* Moves in the opposite diagonal */
+}
+
+/* Color-changing animation */
+@keyframes colorChange {
+    0% { color: #ff3e3e; }
+    25% { color: #ffa63e; }
+    50% { color: #3eff9a; }
+    75% { color: #3e91ff; }
+    100% { color: #ff3e3e; }
+}
+/* Spam moves diagonally within a confined area, with faster speed */
+.spam-text {
+    animation: moveSpam 5s infinite alternate ease-in-out, colorChange 2s infinite;
+}
+
+/* Detection moves in the opposite diagonal with faster speed */
+.detection-text {
+    animation: moveDetection 5s infinite alternate ease-in-out, colorChange 2s infinite;
+}
+     /* Frosted Glass Effect */
+     .frosted-glass {
             backdrop-filter: blur(10px) brightness(1.1);
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 30px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the form to the right */
+    align-items: center;       /* Centers content vertically */
+}
+
+.container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.left-text {
+    flex: 1;
+}
+
+.right-form {
+    max-width: 400px;
+    width: 100%;
+}
+
     </style>
 </head>
 <body>
-    <div class="container my-5">
-    <div class="  frosted-glass" >
-        <h1 class="text-center mb-4">Spam Detector</h1>
-        <form id="sms-form">
-            <div class="form-group">
-                <label for="sms-text">Enter SMS Text:</label>
-                <textarea class="form-control" id="sms-text" rows="2" required ></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block" >Submit</button>
-        </form>
-        <form id="email-form">
-            <div class="form-group">
-                <label for="email-text">Enter Email id:</label>
-                <textarea class="form-control" id="email-text" rows="2" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form>
-        <form id="phone-form">
-            <div class="form-group">
-                <label for="phone-text">Enter Phone Number:</label>
-                <textarea class="form-control" id="phone-text" rows="2" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        </form></div>
-        <div id="result" class="mt-4 "></div>
+    <div class="spam-overlay"></div>
+    
+    
+    <div class="container my-5 d-flex" style="padding-top: 30vh;">
+        <div class="left-text mr-4" style="width: max-content;">
+            <p>This is an online platform where you can check if a text is a Spam Message or not.</p>
+            <p>Enter your text in the Textarea, select the algorithm, press SUBMIT, and wait for the result.</p>
+        </div>
+        
+        <div class="right-form frosted-glass" style="width: 50vw; color: #d1cccc;">
+            <h1 class="text-center mb-4" style="color: rgb(180, 176, 176);">Spam Detector</h1>
+            <form id="sms-form">
+                <div class="form-group">
+                    <label for="sms-text">Enter the message Text:</label>
+                    <textarea class="form-control" id="sms-text" rows="2" required></textarea>
+                </div>
+                <div class="algo-choice">
+                    <label class="radiocontainer">Algo - 1
+                        <input type="radio" name="algo">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="radiocontainer">Algo - 2
+                        <input type="radio" name="algo">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="radiocontainer">Algo - 3
+                        <input type="radio" name="algo">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <div id="result" class="mt-4"></div>
+        </div>
+        <div class="spam-overlay"></div>
+
     </div>
     
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            function handleFormSubmission(formId, textAreaId) {
-                $(formId).submit(function(event) {
-                    event.preventDefault();
-                    var inputText = $(textAreaId).val();
-                    $.ajax({
-                        type: 'POST',
-                        url: '/predict',
-                        data: JSON.stringify({ input: inputText }),
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'json',
-                        success: function(data) {
-                            var prediction = data.prediction;
-                            $('#result').html('<strong>Prediction:</strong> ' + prediction);
-                        },
-                        error: function() {
-                            $('#result').html('<div class="alert alert-danger">Error making prediction.</div>');
-                        }
-                    });
-                });
+  window.onload = function() {
+    const spamCount = 10;
+    const detectionCount = 10;
+    const spamOverlay = document.querySelector('.spam-overlay');
 
-                $(textAreaId).keypress(function(event) {
-                    if (event.which === 13) {
-                        event.preventDefault();
-                        $(formId).submit();
-                    }
-                });
-            }
+    for (let i = 0; i < spamCount; i++) {
+        const spamElement = document.createElement('div');
+        spamElement.classList.add('spam-text');
+        spamElement.textContent = 'Spam';
 
-            handleFormSubmission('#sms-form', '#sms-text');
-            handleFormSubmission('#email-form', '#email-text');
-            handleFormSubmission('#phone-form', '#phone-text');
-        });
+        // Random position within screen limits (not close to edges)
+        const randomX = Math.random() * (window.innerWidth - 100) + 50;
+        const randomY = Math.random() * (window.innerHeight - 100) + 50;
+        spamElement.style.left = `${randomX}px`;
+        spamElement.style.top = `${randomY}px`;
+
+        spamOverlay.appendChild(spamElement);
+    }
+
+    for (let i = 0; i < detectionCount; i++) {
+        const detectionElement = document.createElement('div');
+        detectionElement.classList.add('detection-text');
+        detectionElement.textContent = 'Detection';
+
+        const randomX = Math.random() * (window.innerWidth - 100) + 50;
+        const randomY = Math.random() * (window.innerHeight - 100) + 50;
+        detectionElement.style.left = `${randomX}px`;
+        detectionElement.style.top = `${randomY}px`;
+
+        spamOverlay.appendChild(detectionElement);
+    }
+};
     </script>
 </body>
 </html>
