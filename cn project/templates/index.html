@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam SMS Predictor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   
+    <style>
+body {
+    background-color: black;
+    color: white;
+    overflow: hidden;
+}
+
+.spam-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.spam-text, .detection-text {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0.5; /* Increased brightness */
+    animation: colorChange 2s infinite, randomMove 10s infinite alternate ease-in-out;
+}
+
+/* Random movement animation */
+@keyframes randomMove {
+    0% { transform: translate(0, 0); }
+    100% { 
+        transform: translate(
+            calc(100vw * var(--random-x)), 
+            calc(100vh * var(--random-y))
+        ); 
+    }
+}
+
+/* Color-changing animation */
+@keyframes colorChange {
+    0% { color: #ff3e3e; }
+    25% { color: #ffa63e; }
+    50% { color: #3eff9a; }
+    75% { color: #3e91ff; }
+    100% { color: #ff3e3e; }
+}
+
+/* Frosted Glass Effect */
+.frosted-glass {
+    backdrop-filter: blur(10px) brightness(1.1);
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.left-text {
+    flex: 1;
+}
+
+.right-form {
+    max-width: 400px;
+    width: 100%;
+}
+    </style>
+</head>
+<body>
+    <div class="spam-overlay"></div>
+    
+    <div class="container my-5 d-flex" style="padding-top: 25vh;">
+        <div class="left-text mr-4" style="width: max-content;font-size: 5vh;">
+            <p>This is an online platform where you can check if a text is a Spam Message or not.</p>
+            <p>Enter your text in the Textarea, select the algorithm, press SUBMIT, and wait for the result.</p>
+        </div>
+        
+        <div class="right-form frosted-glass" style="width: 50vw; color: #d1cccc;">
+            <h1 class="text-center mb-4" style="color: rgb(180, 176, 176);">Spam Detector</h1>
+            <form id="sms-form">
+                <div class="form-group">
+                    <label for="sms-text">Enter the message Text:</label>
+                    <textarea class="form-control" id="sms-text" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <div>Result: </div>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Computer Networks Project by <b>Anshaditya Sharma, Balajee Jivesh, Triambak Raghavan</b></p>
+    </div> <div class="spam-overlay"></div>
+    
+    <div class="container my-5 d-flex" style="padding-top: 30vh;">
+        <div class="left-text mr-4" style="width: max-content;">
+            <p>This is an online platform where you can check if a text is a Spam Message or not.</p>
+            <p>Enter your text in the Textarea, select the algorithm, press SUBMIT, and wait for the result.</p>
+        </div>
+        
+        <div class="right-form frosted-glass" style="width: 50vw; color: #d1cccc;">
+            <h1 class="text-center mb-4" style="color: rgb(180, 176, 176);">Spam Detector</h1>
+            <form id="sms-form">
+                <div class="form-group">
+                    <label for="sms-text">Enter the message Text:</label>
+                    <textarea class="form-control" id="sms-text" rows="2" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <div>Result: </div>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Computer Networks Project by <b>Anshaditya Sharma, Balajee Jivesh, Triambak Raghavan</b></p>
+    </div>
+    <!-- Footer end -->
+</div>
+<!-- Main Content part end -->
+</section>
+<!-- Main Section End -->
+<script src="./Js/JQuery.js"></script>
+<script src="./Js/Bootstrap.min.js"></script>
+<script src="./Js/Main.js"></script>
+    
+    <script>
+window.onload = function() {
+    const spamCount = 20; // Increased count for more elements
+    const detectionCount = 20; // Increased count for more elements
+    const spamOverlay = document.querySelector('.spam-overlay');
+
+    for (let i = 0; i < spamCount; i++) {
+        const spamElement = document.createElement('div');
+        spamElement.classList.add('spam-text');
+        spamElement.textContent = 'Spam';
+
+        // Generate random values for movement direction
+        const randomX = Math.random();
+        const randomY = Math.random();
+        spamElement.style.setProperty('--random-x', randomX);
+        spamElement.style.setProperty('--random-y', randomY);
+
+        spamOverlay.appendChild(spamElement);
+    }
+
+    for (let i = 0; i < detectionCount; i++) {
+        const detectionElement = document.createElement('div');
+        detectionElement.classList.add('detection-text');
+        detectionElement.textContent = 'Detection';
+
+        // Generate random values for movement direction
+        const randomX = Math.random();
+        const randomY = Math.random();
+        detectionElement.style.setProperty('--random-x', randomX);
+        detectionElement.style.setProperty('--random-y', randomY);
+
+        spamOverlay.appendChild(detectionElement);
+    }
+};
+    </script>
+    <script>
+        document.getElementById("sms-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const smsText = document.getElementById("sms-text").value;
+
+            fetch("/check_spam", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email_content: smsText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").textContent = data.result;
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
